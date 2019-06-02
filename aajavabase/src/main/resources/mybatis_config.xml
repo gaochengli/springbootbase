@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "//mybatis.org//DTD Config 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<properties resource="jdbc.properties">
+<!-- 	<properties url="http://www.clgao.com/docs/learns/mybatis/jdbc.properties"> -->
+<!-- 		<property name="pdriver" value="com.mysql.jdbc.Driver"/> -->
+<!-- 		<property name="purl" value="jdbc:mysql://localhost:3306/test"/> -->
+<!-- 		<property name="pusername" value="root"/> -->
+<!-- 		<property name="ppwd" value="root"/> -->
+	</properties>
+<!-- 	<setting name="" value=""/> -->
+		<typeAliases>
+			<typeAlias alias="role" type="entity.Role"/>
+		</typeAliases>
+<!-- 	<typeHandlers/> -->
+<!-- 	<objectFactory type=""></objectFactory> -->
+<!-- 	<plugins> -->
+<!-- 		<plugin interceptor=""></plugin> -->
+<!-- 	</plugins> -->
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+<!-- 				<property name="driver" value="com.mysql.jdbc.Driver"/> -->
+<!-- 				<property name="url" value="jdbc:mysql://localhost:3306/test"/> -->
+<!-- 				<property name="username" value="root"/> -->
+<!-- 				<property name="password" value="root"/> -->
+					<property name="driver" value="${pdriver}"/>
+					<property name="url" value="${purl}"/>
+					<property name="username" value="${pusername}"/>
+					<property name="password" value="${ppwd}"/>
+			</dataSource>
+		</environment>
+	</environments>
+<!-- 	<databaseIdProvider type=""></databaseIdProvider> -->
+	<mappers>
+		<mapper resource="role.xml"/>
+	</mappers>
+</configuration>

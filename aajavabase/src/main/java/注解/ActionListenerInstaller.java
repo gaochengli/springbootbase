@@ -1,0 +1,52 @@
+/**
+ * 
+ */
+package 注解;
+
+import java.awt.event.ActionListener;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+
+/**
+ * @author clgao
+ *
+ */
+public class ActionListenerInstaller {
+
+	public static void processAnnotations(Object obj) {
+		try {
+			Class<?> cl = obj.getClass();
+//			Method[] ms = cl.getDeclaredMethods();
+			for(Method m : cl.getDeclaredMethods()) {
+				ActionListenerFor a = m.getAnnotation(ActionListenerFor.class);
+				if(a != null) {
+					Field f = cl.getDeclaredField(a.source());
+					f.setAccessible(true);
+					addListener(f.get(obj),obj,m);
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	public static void addListener(Object source,final Object param,final Method m) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		InvocationHandler handler = new InvocationHandler() {
+			@Override
+			public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+				// TODO Auto-generated method stub
+				return m.invoke(param, args);
+			}
+			
+		};
+		Object listener = Proxy.newProxyInstance(null, new Class[] {ActionListener.class}, handler);
+		Method adder = source.getClass().getMethod("addActionListener", ActionListener.class);
+		adder.invoke(source, listener);
+	}
+	
+}
